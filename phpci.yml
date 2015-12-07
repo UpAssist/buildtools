@@ -1,0 +1,66 @@
+build_settings:
+  clone_depth: 1
+  verbose: false
+  prefer_symlink: false
+
+setup:
+  composer:
+    action: "install"
+
+test:
+#  php_docblock_checker:
+#    allowed_warnings: 10
+#    skip_classes: true
+#  php_mess_detector:
+#    rules:
+#      - "cleancode"
+#      - "controversial"
+#      - "codesize"
+#      - "design"
+#      - "naming"
+#      - "unusedcode"
+#    allow_failures: true
+#    zero_config: true # do not make build as failed if something was detected
+#  php_code_sniffer:
+#      path: "system"
+#      standard: "PSR1,PSR2"
+
+complete:
+
+success:
+  \UpAssist\PHPCI\Deployer\Plugin\Deployer:
+    deployFile: 'Build/BuildTools/Deployer/deploy.php'
+    master:
+      stage: test
+      server: rwv.etopia.nl
+      user: www-data
+      deploy_path: /var/www/rwv.etopia.nl
+      shared_dirs:
+        - 'Data/Persistent/'
+        - 'Data/Forms/'
+      writable_dirs:
+        - 'Data/Persistent/'
+        - 'Data/Forms/'
+        - 'Data/'
+      run:
+        migrate: true
+        noderepair: false
+        nodeindex: false
+        nodeindexcleanup: false
+        flush: true
+        warmup: true
+
+#  slack_notify:
+#    webhook_url: "https://hooks.slack.com/services/T0BHYQH5Y/***REMOVED***"
+#    room: "#phpci"
+#    username: "PHPCI"
+#    icon: ":ghost:"
+#    message: "<%PROJECT_URI%|%PROJECT_TITLE%> - <%BUILD_URI%|Build #%BUILD%> has finished for commit <%COMMIT_URI%|%SHORT_COMMIT% (%COMMIT_EMAIL%)> on branch <%BRANCH_URI%|%BRANCH%>"
+
+failure:
+#  slack_notify:
+#    webhook_url: "https://hooks.slack.com/services/T0BHYQH5Y/***REMOVED***"
+#    room: "#phpci"
+#    username: "PHPCI"
+#    icon: ":ghost:"
+#    message: "<%PROJECT_URI%|%PROJECT_TITLE%> - <%BUILD_URI%|Build #%BUILD%> has FAILED for commit <%COMMIT_URI%|%SHORT_COMMIT% (%COMMIT_EMAIL%)> on branch <%BRANCH_URI%|%BRANCH%>"

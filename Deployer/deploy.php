@@ -1,7 +1,7 @@
 <?php
 require 'recipe/common.php';
-require 'Build/Packages/deployphp/recipes/recipes/local.php';
-require 'Build/Packages/deployphp/recipes/recipes/rsync.php';
+require 'Packages/Libraries/deployphp/recipes/recipes/local.php';
+require 'Packages/Libraries/deployphp/recipes/recipes/rsync.php';
 
 server(getenv('STAGE'), getenv('SERVER'))
     ->user(getenv('USER'))
@@ -22,7 +22,15 @@ set('rsync', [
         '.gitignore',
         'deploy.php',
         'phpci.yml',
-        'upload/',
+        'Build/',
+        'Configuration/Development/',
+        'Configuration/Production/',
+        'Configuration/Testing/',
+        'Configuration/PackageStates.php',
+        'Configuration/README',
+        'Configuration/Settings.*',
+        'Configuration/tmp'
+
     ],
     'exclude-file' => false,
     'include' => [],
@@ -35,11 +43,14 @@ set('rsync', [
     'timeout' => 120,
 ]);
 
-task('deploy:uploadFolder', function () {
+task('deploy:createSymlinks', function () {
     try {
-        run("cd {{deploy_path}}/shared && if [ ! -d upload ]; then mkdir upload; fi");
-        run('cd {{release_path}} && ln -s {{deploy_path}}/shared/upload upload');
-        writeln('Successfully created upload folder.');
+        run('mkdir -p {{release_path}}/Configuration/Production');
+        run('cd {{release_path}}/Configuration/Production && ln -s {{deploy_path}}/shared/Configuration/Production/Settings.yaml');
+        writeln('Successfully added symlink to Settings.yaml');
+
+        run('cd {{release_path}}/Data && ln -s {{deploy_path}}/shared/Data/Persistent');
+        writeln('Successfully added symlink to Data folder');
     } catch (\Exception $e) {
         throw new $e;
     }
@@ -54,7 +65,7 @@ task('deploy', [
     'local:update_code',
     'local:vendors',
     'rsync',
+    'deploy:createSymlinks',
     'deploy:symlink',
-    'deploy:uploadFolder',
     'cleanup',
 ])->desc('Deployed the {{ branch }} branch of your project');
