@@ -1,0 +1,12 @@
+{
+  "name": "upassist/buildtools",
+  "type": "typo3-flow-build",
+  "description": "",
+  "require": {
+    "neos/composer-plugin": "^1.0.1",
+    "deployphp/recipes": "~3.0"
+  },
+  "extra": {
+    "installer-name": "BuildTools"
+  }
+}
