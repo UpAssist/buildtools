@@ -49,6 +49,18 @@ task('deploy:createSymlinks', function () {
     }
 });
 
+task('deploy:flowcommands', function() {
+   try {
+       run('cd {{deploy_path}}');
+       run('FLOW_CONTEXT=Production ./flow doctrine:migrate');
+       run('FLOW_CONTEXT=Production ./flow resource:publish');
+       run('FLOW_CONTEXT=Production ./flow flow:cache:flush');
+       run('FLOW_CONTEXT=Production ./flow flow:help');
+   } catch (\Exception $e) {
+       throw new $e;
+   }
+});
+
 /**
  * Main task
  */
@@ -59,6 +71,7 @@ task('deploy', [
     'local:vendors',
     'rsync',
     'deploy:createSymlinks',
+    'deploy:flowcommands',
     'deploy:symlink',
     'cleanup',
 ])->desc('Deployed the {{ branch }} branch of your project');
