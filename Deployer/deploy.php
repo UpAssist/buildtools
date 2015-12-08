@@ -22,14 +22,7 @@ set('rsync', [
         '.gitignore',
         'deploy.php',
         'phpci.yml',
-        'Build/',
-        'Configuration/Development/',
-        'Configuration/Production/',
-        'Configuration/Testing/',
-        'Configuration/PackageStates.php',
-        'Configuration/README',
-        'Configuration/Settings.*',
-        'Configuration/tmp'
+        'Build/tmp'
 
     ],
     'exclude-file' => false,
