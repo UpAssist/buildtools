@@ -1,4 +1,5 @@
 <?php
+
 require 'recipe/common.php';
 require 'Packages/Libraries/deployphp/recipes/recipes/local.php';
 require 'Packages/Libraries/deployphp/recipes/recipes/rsync.php';
@@ -71,7 +72,7 @@ task('deploy', [
     'local:vendors',
     'rsync',
     'deploy:createSymlinks',
-    'deploy:flowcommands',
+//    'deploy:flowcommands',
     'deploy:symlink',
     'cleanup',
 ])->desc('Deployed the {{ branch }} branch of your project');
