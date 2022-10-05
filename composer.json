@@ -3,8 +3,8 @@
   "type": "typo3-flow-build",
   "description": "",
   "require": {
-    "neos/composer-plugin": "~1.0.7",
-    "deployphp/recipes": "~3.0"
+    "neos/composer-plugin": "*",
+    "deployphp/recipes": "*
   },
   "extra": {
     "installer-name": "BuildTools"
