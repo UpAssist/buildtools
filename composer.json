@@ -4,7 +4,7 @@
   "description": "",
   "require": {
     "neos/composer-plugin": "*",
-    "deployphp/recipes": "*
+    "deployphp/recipes": "*"
   },
   "extra": {
     "installer-name": "BuildTools"
